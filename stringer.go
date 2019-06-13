@@ -311,17 +311,21 @@ func (pkg *Package) check(fs *token.FileSet, astFiles []*ast.File) {
 
 func (g *Generator) transformValueNames(values []Value, transformMethod string) {
 	var sep rune
+	caseFunc := strings.ToLower
 	switch transformMethod {
 	case "snake":
 		sep = '_'
 	case "kebab":
 		sep = '-'
+	case "SNAKE":
+		sep = '_'
+		caseFunc = strings.ToUpper
 	default:
 		return
 	}
 
 	for i := range values {
-		values[i].name = strings.ToLower(name.Delimit(values[i].name, sep))
+		values[i].name = caseFunc(name.Delimit(values[i].name, sep))
 	}
 }
 
